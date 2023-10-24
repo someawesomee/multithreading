@@ -22,19 +22,19 @@ void producer(){
 
 void consumer() {
     while (true) {
-        std::unique_lock<std::mutex> lock(mtx);
+        unique_lock<std::mutex> lock(mtx);
         cv.wait(lock, [] { return !buffer.empty(); });
         int data = buffer.front();
         buffer.pop();
-        std::cout << "Потреблено: " << data << std::endl;
+        cout << "Потреблено: " << data << std::endl;
         lock.unlock();
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }
 
 int main() {
-    std::thread producerThread(producer);
-    std::thread consumerThread(consumer);
+    thread producerThread(producer);
+    thread consumerThread(consumer);
 
     producerThread.join();
     consumerThread.join();
